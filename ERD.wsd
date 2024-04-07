@@ -1,0 +1,81 @@
+@startuml "ER Diagram"
+
+entity User {
+    *id: number<<generated>>
+    --
+    *username: varchar(45)
+    *password: varchar(255)
+    *first_name: varchar(100)
+    *last_name: varchar(100)
+    phone_number: varchar(15)
+    email: varchar(100)
+    date_of_birth: DateTime
+    patient_no: varchar(45)
+    --
+    address_id: number<<FK>>
+}
+
+entity Address {
+    *id: number<<generated>>
+    --
+    *apt: varchar(100)
+    *street: varchar(45)
+    *city: varchar(45)
+    *state: varchar(45)
+    *postal_code: varchar(5)
+    
+}
+
+entity Specialization {
+    *id: number<<generated>>
+    --
+    *name: varchar(100)
+}
+
+entity DentistSpecialization {
+    *specialization_id: number<<FK>>
+    *user_id: number<<FK>>
+}
+
+entity Surgery {
+    *id: number<<generated>>
+    --
+    *surgery_no: varchar(45)
+    *phone_number: varchar(15)
+    --
+    address_id: number<<FK>>
+}
+
+entity Appointment {
+    datetime: DateTime
+    status: varchar(10)
+    --
+    patient_id: number<<FK>>
+    dentist_id: number<<FK>>
+    surgery_id: number<<FK>>
+}
+
+entity Role {
+    *id: number<<generated>>
+    --
+    *name: varchar(50)
+}
+
+entity UserRole {
+    *user_id: number<<FK>>
+    *role_id: number<<FK>>
+}
+
+User ||..|| Address
+User ||..|{ UserRole
+User ||..|{ DentistSpecialization
+User ||..|{ Appointment
+User ||..|{ Appointment
+
+Address ||..|| Surgery
+Specialization ||..|{ DentistSpecialization
+Role ||..|{ UserRole
+
+Surgery ||..|{ Appointment
+
+@enduml
